@@ -1,0 +1,15 @@
+@font-face {
+  font-family: 'Monocraft';
+  src: url('./assets/fonts/Monocraft.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Monaspace Krypton';
+  src: url('./assets/fonts/MonaspaceKryptonVar.woff2') format('woff2');
+  font-weight: 100 500;
+  font-style: normal;
+  font-display: swap;
+}

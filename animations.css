@@ -1,0 +1,41 @@
+/* Fade-scale animation for SPA transitions */
+.fade-scale {
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 0.35s cubic-bezier(0.4,0,0.2,1) 0.05s, transform 0.35s cubic-bezier(0.4,0,0.2,1) 0.05s;
+  will-change: opacity, transform;
+}
+.fade-scale.in {
+  opacity: 1;
+  pointer-events: auto;
+  display: block;
+  transition-delay: 0s;
+  will-change: opacity, transform;
+}
+
+#spa-loading-overlay.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.35s cubic-bezier(0.4,0,0.2,1), visibility 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Wavy text for home page */
+.wavy-text {
+  font-size: 2.5rem;
+  font-weight: bold;
+  letter-spacing: 0.12em;
+  color: #fff;
+  margin: 2.5rem 0 1.5rem 0;
+  text-shadow: 0 2px 12px rgba(34,34,34,0.18);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  min-height: 3.5em;
+}

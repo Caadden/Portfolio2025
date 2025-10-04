@@ -1,0 +1,206 @@
+/* Base and layout styles */
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100svh;
+  width: 100svw;
+  font-family: 'Monaspace Krypton', monospace;
+  scroll-behavior: smooth;
+}
+
+#spa-content {
+  position: relative;
+  height: 100svh;
+  width: 100svw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+#spa-loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  z-index: 3000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  transition: opacity 0.35s cubic-bezier(0.4,0,0.2,1), visibility 0.35s cubic-bezier(0.4,0,0.2,1);
+  pointer-events: all;
+  opacity: 1;
+  visibility: visible;
+}
+#spa-loading-overlay.hidden {
+  display: none;
+}
+
+.spa-loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 2.5vw 2.5vh 0;
+  z-index: 1001;
+}
+
+.loader {
+  position: relative;
+  border-top: 8px solid #fff;
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 0.7rem;
+}
+
+.loader-percent {
+  color: #e1c9da;
+  font-size: 1.2rem;
+  font-family: monospace;
+  text-shadow: 0 2px 8px #222;
+  letter-spacing: 0.05em;
+}
+
+/* Blurred background video */
+.bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -2;
+  filter: blur(6px) brightness(0.85);
+  pointer-events: none;
+}
+
+/* Profile image gradient background and positioning */
+.profile-img-gradient {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.profile-img-gradient::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 70% 50%, #b2f7b8 0%, #eaffea 60%, rgba(178,247,184,0) 100%);
+  z-index: 0;
+  filter: blur(8px);
+}
+
+.profile-img {
+  max-width: 220px;
+  width: 60vw;
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  position: relative;
+  z-index: 1;
+  margin-right: 2vw;
+}
+
+footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 3rem;
+  gap: 1rem;
+  padding-bottom: 2.5rem;
+}
+
+footer a {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  margin: 0 0.5rem;
+  border-radius: 2rem;
+  background: #222;
+  color: #e1c9da;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 2px solid #e1c9da;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+}
+footer a:hover {
+  background: #e1c9da;
+  color: #222;
+  border: 2px solid #e1c9da;
+}
+
+header, footer, section {
+  padding: 20px;
+  text-align: center;
+}
+
+h1, h2 {
+  margin: 10px 0;
+}
+
+/* Center SPA headers */
+#spa-content h1 {
+  text-align: center;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.project-cards {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 2rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.projectcard {
+  background: rgba(128, 128, 128, 0.18);
+  border-radius: 1rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08), 0 1.5px 4px rgba(0,0,0,0.06);
+  padding: 2rem 1.5rem;
+  min-width: 220px;
+  max-width: 300px;
+  flex: 1 1 220px;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  backdrop-filter: blur(1px);
+  color: #222;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.projectcard:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 8px 24px rgba(0,128,64,0.15), 0 2px 8px rgba(0,0,0,0.10);
+  background: rgba(128, 128, 128, 0.28);
+}
+
+.projectcard h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+  color: #e1c9da;
+}
+
+.projectcard p {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+}

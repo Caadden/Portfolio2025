@@ -4,45 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="fonts.css" />
+    <link rel="stylesheet" href="animations.css" />
+    <link rel="stylesheet" href="nav.css" />
+    <link rel="stylesheet" href="base.css" />
 </head>
 <body>
+    <video autoplay loop muted playsinline class="bg-video">
+        <source src="assets/Background Video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
     <header>
-        <h1><span id="greeting"></span> I'm Caden!</h1>
-        <p>Welcome to my portfolio :D</p>
+        <button id="hamburger-menu" aria-label="Open menu">
+            <span></span><span></span><span></span>
+        </button>
+        <div id="menu-overlay" class="menu-overlay hidden">
+            <nav class="menu-nav" aria-label="Main menu">
+                <a href="#home" data-page="home">home</a>
+                <a href="#about" data-page="about">about me</a>
+                <a href="#projects" data-page="projects">projects</a>
+                <a href="#experiences" data-page="experiences">experiences</a>
+                <a href="#contact" data-page="contact">contact</a>
+            </nav>
+        </div>
     </header>
-
-    <section id="about">
-        <h2>About Me</h2>
-        <p>I'm a freshman CS student at UF interested in making projects!</p>
-    </section>
-        <section id="projects">
-        <h2>Projects</h2>
-        <p>Below are some of the projects that I've worked on.</p>
-        <div class="project-cards">
-            <div class="projectcard">
-                <h3>Sudoku</h3>
-                <p>A web-based sudoku game built with Python.</p>
-            </div>
-            <div class="projectcard">
-                <h3>Minesweeper</h3>
-                <p>A web-based sudoku game built with Python.</p>
-            </div>
+    <div id="spa-loading-overlay">
+        <div class="spa-loader-container">
+            <div class="loader"></div>
+            <div class="loader-percent" id="loader-percent">0%</div>
         </div>
-    </section>
-        <section id="experiences">
-        <h2>Experiences</h2>
-        <p></p>
-    </section>
-
-    <footer>
-        <h2>Get in Touch!</h2>
-        <div>
-            <a href="https://www.linkedin.com" target="_blank">LinkedIn</a>
-            <a href="https://www.github.com/Caadden" target="_blank">GitHub</a>
-        </div>
-    </footer>
-
+    </div>
+    <main id="spa-content"></main>
     <script src="script.js"></script>
 </body>
 </html>
