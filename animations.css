@@ -1,18 +1,3 @@
-/* Fade-scale animation for SPA transitions */
-.fade-scale {
-  opacity: 0;
-  transform: scale(0.98);
-  transition: opacity 0.35s cubic-bezier(0.4,0,0.2,1) 0.05s, transform 0.35s cubic-bezier(0.4,0,0.2,1) 0.05s;
-  will-change: opacity, transform;
-}
-.fade-scale.in {
-  opacity: 1;
-  pointer-events: auto;
-  display: block;
-  transition-delay: 0s;
-  will-change: opacity, transform;
-}
-
 #spa-loading-overlay.fade-out {
   opacity: 0;
   visibility: hidden;

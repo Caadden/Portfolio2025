@@ -4,21 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caden Castleberry | Portfolio</title>
+
     <link rel="stylesheet" href="fonts.css" />
     <link rel="stylesheet" href="animations.css" />
-    <link rel="stylesheet" href="nav.css" />
     <link rel="stylesheet" href="base.css" />
+    <link rel="stylesheet" href="nav.css" />
 </head>
 <body>
     <video autoplay loop muted playsinline class="bg-video">
-        <source src="assets/Background Video.mp4" type="video/mp4">
+        <source src="assets/backgrounds/bg-afternoon1.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
+        <img src="assets/swipe_arrow.png" alt="Swipe down arrow" class="swipe-arrow" />
     <header>
-        <button id="hamburger-menu" aria-label="Open menu">
+        <button id="hamburger-menu" aria-label="Open menu" aria-expanded="false">
             <span></span><span></span><span></span>
         </button>
-        <div id="menu-overlay" class="menu-overlay hidden">
+        <div id="menu-overlay" class="menu-overlay hidden" tabindex="-1" aria-hidden="true">
             <nav class="menu-nav" aria-label="Main menu">
                 <a href="#home" data-page="home">home</a>
                 <a href="#about" data-page="about">about me</a>
@@ -35,6 +37,6 @@
         </div>
     </div>
     <main id="spa-content"></main>
-    <script src="script.js"></script>
+    <script type="module" src="js/main.js"></script>
 </body>
 </html>
