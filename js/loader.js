@@ -30,7 +30,7 @@ export function animateLoaderPercent(callback) {
       if (percentElem) percentElem.textContent = Math.floor(percent) + '%';
     }
   }, 24);
-  // Failsafe: hide loader after 3 seconds no matter what
+  // Failsafe: hide loader after a short time no matter what (keeps page interactive)
   setTimeout(() => {
     if (!finished) {
       finished = true;

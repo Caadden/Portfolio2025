@@ -46,6 +46,7 @@ export const pages = {
 };
 
 let isTransitioning = false;
+let lastTransitionStart = 0;
 let currentPage = null;
 
 const PREFETCH_LIST = ['about', 'projects', 'experiences'];
@@ -225,11 +226,21 @@ function startTypewriter(el) {
 
 export function loadPage(page) {
   if (!page) page = 'home';
-  if (isTransitioning) return;
+  // If a transition is marked in-progress but it's stale (older than 900ms), clear it
+  if (isTransitioning) {
+    const age = Date.now() - lastTransitionStart;
+    if (age > 900) {
+      console.warn('spa.loadPage: clearing stale isTransitioning lock (age=' + age + 'ms)');
+      isTransitioning = false;
+    } else {
+      return;
+    }
+  }
   if (page === currentPage) return;
   const main = document.getElementById('spa-content');
   if (!main) return;
   isTransitioning = true;
+  lastTransitionStart = Date.now();
   const oldChild = main.querySelector('.fade-scale');
 
   const newChild = insertNewFromTemplate(main, page);
@@ -269,16 +280,16 @@ export function loadPage(page) {
   }
 
   // Fallback: if transitionend doesn't fire (browsers, visibility, or CSS issues), ensure we don't stay locked
+  // Shorter fallback: if transitionend doesn't fire, clear the lock sooner
   newChild._transitionFallback = setTimeout(() => {
     if (isTransitioning) {
       console.warn('spa.loadPage: transition fallback fired for', page);
-      // Try to clean up and mark current page
       if (oldChild && oldChild.parentNode === main) main.removeChild(oldChild);
       currentPage = page;
       isTransitioning = false;
     }
     newChild._transitionFallback = null;
-  }, 2600);
+  }, 900);
 }
 
 export function updateSwipeArrowVisibility(page) {

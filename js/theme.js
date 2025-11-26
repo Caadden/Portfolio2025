@@ -37,14 +37,25 @@ export function initTheme() {
 
     if (source.getAttribute('src') !== videoFile) {
       source.setAttribute('src', videoFile);
-      try {
-        video.load();
-        const playPromise = video.play();
-        if (playPromise && typeof playPromise.then === 'function') {
-          playPromise.catch(() => {/* ignore autoplay failures */});
+      // Defer heavy video load/play to an idle period to avoid blocking
+      const doLoad = () => {
+        try {
+          // ensure metadata preload so browser can show frame quickly
+          try { video.setAttribute('preload', 'metadata'); } catch (e) {}
+          video.load();
+          const playPromise = video.play();
+          if (playPromise && typeof playPromise.then === 'function') {
+            playPromise.catch(() => {/* ignore autoplay failures */});
+          }
+        } catch (e) {
+          console.warn('Video load/play failed:', e);
         }
-      } catch (e) {
-        console.warn('Video load/play failed:', e);
+      };
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(doLoad, { timeout: 1500 });
+      } else {
+        // Slight delay fallback
+        setTimeout(doLoad, 300);
       }
     }
 
