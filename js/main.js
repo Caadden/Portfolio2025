@@ -14,7 +14,7 @@ function initApp() {
     // Initial load: determine page
     let page = window.location.hash.replace('#', '') || 'home';
 
-    // Lock scroll during load (base.css already hides scrolling; keep inline override for consistency)
+    // Lock scroll during load (base.css already hides scrolling)
     document.body.style.overflow = 'hidden';
     const hb = document.getElementById('hamburger-menu');
     if (hb) hb.style.display = 'none';
@@ -26,12 +26,9 @@ function initApp() {
         console.error('main.js: #spa-content not found');
         return;
       }
+      // Use SPA loader to render the initial page so dynamic home generation runs
       main.innerHTML = '';
-      const newChild = document.createElement('div');
-      newChild.className = 'fade-scale';
-      newChild.innerHTML = pages[page] || pages.home;
-      main.appendChild(newChild);
-      setTimeout(() => newChild.classList.add('in'), 10);
+      loadPage(page, lastScrollDirection);
       hideLoading();
     });
 
@@ -49,7 +46,7 @@ function initApp() {
     // Initial arrow visibility
     updateSwipeArrowVisibility(page);
 
-    // Initialize scroll/touch handlers (they will call loadPage via hash change or directly)
+    // Initialize scroll/touch handlers
     initScrollHandlers(loadPage);
 
     // Prefetch important pages in idle time for near-instant transitions

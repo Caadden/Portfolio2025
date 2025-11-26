@@ -40,9 +40,9 @@
 body, html {
   margin: 0;
   padding: 0;
-  /* Prevent native scrolling — the app handles navigation via wheel/touch handlers */
+  /* Prevent native scrolling */
   overflow: hidden;
-  /* disable browser touch panning so our touch handlers control navigation */
+  /* disable browser touch panning so touch handlers control navigation */
   touch-action: none;
   height: 100svh;
   width: 100svw;
@@ -203,6 +203,15 @@ h1, h2 {
   margin-right: auto;
 }
 
+/* Reserve space for sub-intro to prevent hero jitter during typing */
+.sub-intro {
+  display: block;
+  min-height: 1.4em; /* keeps vertical space even when empty */
+}
+.sub-intro:empty::before {
+  content: "\00A0"; /* non-breaking space to hold line-height */
+}
+
 .project-cards {
   display: flex;
   flex-direction: row;
@@ -275,6 +284,10 @@ h1, h2 {
   --main-accent: #ffb347;
   --main-text: #3a2c0a;
   background-color: var(--main-bg);
+  /* Menu palette for morning: overlay uses page text, pills use accent */
+  --menu-bg: var(--main-text);
+  --menu-text: var(--main-accent);
+  --menu-pill: var(--main-accent);
 }
 
 body.theme-afternoon.bg-afternoon1 {
@@ -282,6 +295,10 @@ body.theme-afternoon.bg-afternoon1 {
   --main-accent: #F5F7FA;
   --main-text: #00B3C6;
   background-color: var(--main-bg);
+  /* Menu defaults for afternoon */
+  --menu-bg: rgba(34,34,34,0.97);
+  --menu-text: var(--main-text);
+  --menu-pill: var(--main-accent);
 }
 
 body.theme-afternoon.bg-afternoon2 {
@@ -289,6 +306,9 @@ body.theme-afternoon.bg-afternoon2 {
   --main-accent: #E3E0DD;
   --main-text: #A9746E;
   background-color: var(--main-bg);
+  --menu-bg: rgba(34,34,34,0.97);
+  --menu-text: var(--main-text);
+  --menu-pill: var(--main-accent);
 }
 
 .theme-evening {
@@ -296,12 +316,19 @@ body.theme-afternoon.bg-afternoon2 {
   --main-accent: #BFB9B0;
   --main-text: #475C6E;
   background-color: var(--main-bg);
+  --menu-bg: rgba(34,34,34,0.97);
+  --menu-text: var(--main-text);
+  --menu-pill: var(--main-accent);
 }
 .theme-night {
   --main-bg: #232946;
   --main-accent: #A6A6A6;
   --main-text: #2E2E2E;
   background-color: var(--main-bg);
+  /* Night menu: overlay uses accent, pills/text swap */
+  --menu-bg: var(--main-accent);
+  --menu-text: var(--main-text);
+  --menu-pill: var(--main-text);
 }
 
 /* Example usage for accent: */
@@ -335,9 +362,9 @@ body.theme-afternoon.bg-afternoon2 p, body.theme-afternoon.bg-afternoon2 small {
 .button, .pill {
   background: var(--main-accent);
 }
-/* Active nav link should strongly use the accent */
+/* Active nav link uses the menu pill variable (per-theme) */
 .menu-nav a.active {
-  background: var(--main-accent) !important;
+  background: var(--menu-pill);
 }
 
 /* Button/pill hover: invert to main-text background with accent text */
@@ -372,7 +399,7 @@ body.theme-afternoon.bg-afternoon2 p, body.theme-afternoon.bg-afternoon2 small {
   }
 }
 
-/* Staggered fade / lift entrance for page fragments (used by SPA when injecting pages) */
+/* Staggered fade / lift entrance for page fragments */
 .fade-scale.in h2,
 .fade-scale.in p,
 .fade-scale.in a {

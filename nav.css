@@ -1,7 +1,8 @@
-/* Theme accent for navigation pills and active menu links */
+/* Theme-driven menu variables are defined per theme in `base.css`.
+   Use those variables here so a single set of rules covers all themes. */
 .menu-nav a.active {
-  background: var(--main-accent);
-  color: var(--main-text);
+  background: var(--menu-pill);
+  color: var(--menu-bg);
 }
 /* Hamburger menu button */
 #hamburger-menu {
@@ -10,7 +11,7 @@
   right: 1.5rem;
   width: 44px;
   height: 20px;
-  background: rgba(34,34,34,0.85);
+  background: var(--menu-bg);
   border: none;
   border-radius: 12px;
   display: flex;
@@ -29,17 +30,17 @@
   transform: translateY(-32px) scale(0.96);
 }
 #hamburger-menu:hover {
-  background: var(--main-accent);
+  background: var(--menu-pill);
 }
 #hamburger-menu:hover span {
-  background: var(--main-text);
+  background: var(--menu-bg);
 }
 #hamburger-menu span {
   display: block;
   width: 22px;
   height: 2.5px;
   /* use the theme text color for the burger lines so they invert with the menu */
-  background: var(--main-text);
+  background: var(--menu-text);
   border-radius: 1.5px;
   transition: background 0.18s;
   margin: 0;
@@ -58,10 +59,11 @@
   top: 3rem;
   right: 2rem;
   width: 175px;
-  background: rgba(34,34,34,0.97);
+  background: var(--menu-bg);
+  color: var(--menu-text);
   z-index: 1199;
   border-radius: 1.2rem;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  box-shadow: 0 8px 32px color-mix(in srgb, var(--menu-bg) 16%, black 84%);
   padding: 1.2rem 0.5rem;
   display: flex;
   align-items: stretch;
@@ -95,7 +97,7 @@
   width: max-content;
   min-width: 9rem;
   font-size: 1.15rem;
-  color: var(--main-text);
+  color: var(--menu-text);
   background: none;
   border: 2px solid transparent;
   transition: color 0.18s, background 0.18s, box-shadow 0.18s, border 0.18s;
@@ -116,7 +118,7 @@
   margin: 0.3rem 0;
   min-width: 9rem;
   font-size: 1.15rem;
-  color: var(--main-text);
+  color: var(--menu-text);
   background: none;
   border: 2px solid transparent;
   transition: all 0.25s ease;
@@ -130,9 +132,9 @@
 .menu-nav a.active,
 .menu-nav a:hover,
 .menu-nav a:focus {
-  background: var(--main-accent);
-  color: var(--main-text);
-  border: 2px solid var(--main-accent);
+  background: var(--menu-pill);
+  color: var(--menu-bg);
+  border: 2px solid var(--menu-pill);
   transform: translateY(-1px);
   z-index: 1;
 }
@@ -149,7 +151,7 @@
   height: 155%;
   transform: translate(-50%, -50%);
   border-radius: 9999px;
-  background: var(--main-accent);
+  background: var(--menu-pill);
   opacity: 0.15;
   filter: blur(3px);
   z-index: -1;

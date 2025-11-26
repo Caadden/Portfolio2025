@@ -13,10 +13,10 @@ export function initScrollHandlers(loadPageFn) {
     else if (direction === 'up' && idx > 0) idx--;
     else return;
 
-    // Update hash immediately
+    // record direction so the SPA can use it for directional animations
+    lastScrollDirection = direction;
+    // update the hash and let the global `hashchange` handler perform the navigation
     window.location.hash = pageOrder[idx];
-    // Immediately trigger loadPage manually
-    loadPageFn(pageOrder[idx]);
   }
 
   // Mouse wheel

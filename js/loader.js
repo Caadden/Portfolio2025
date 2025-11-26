@@ -6,7 +6,7 @@ export function hideLoading() {
     overlay.classList.add('hidden');
     overlay.classList.remove('fade-out');
   }, 350); // match CSS fade duration
-  // clear inline lock — base.css keeps overflow:hidden; loader previously used inline styles
+  // clear inline lock
   document.body.style.overflow = '';
   const hb = document.getElementById('hamburger-menu');
   if (hb) hb.style.display = '';

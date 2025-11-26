@@ -1,27 +1,7 @@
 // spa.js — pages object, loadPage, updateSwipeArrowVisibility
 export const pages = {
-  home: `
-        <h1 class="wavy-text">
-            <span style="display:inline-block; transform: translateY(-18px) rotate(-12deg);">W</span>
-            <span style="display:inline-block; transform: translateY(-8px) rotate(-6deg);">o</span>
-            <span style="display:inline-block; transform: translateY(6px) rotate(8deg);">o</span>
-            <span style="display:inline-block; transform: translateY(18px) rotate(16deg);">o</span>
-            <span style="display:inline-block; transform: translateY(8px) rotate(8deg);">o</span>
-            <span style="display:inline-block; transform: translateY(-10px) rotate(-10deg);">s</span>
-            <span style="display:inline-block; transform: translateY(-20px) rotate(-18deg);">h</span>
-            <span style="display:inline-block; transform: translateY(-5px) rotate(-4deg);">!</span>
-            <span style="display:inline-block; transform: translateY(22px) rotate(18deg); margin-left: 1.5rem;">h</span>
-            <span style="display:inline-block; transform: translateY(10px) rotate(8deg);">e</span>
-            <span style="display:inline-block; transform: translateY(-12px) rotate(-10deg);">y</span>
-            <span style="display:inline-block; transform: translateY(0px) rotate(0deg);">!</span>
-        </h1>
-        <footer>
-            <div>
-                <a href="https://www.linkedin.com/in/caden-castleberry-3ba696363/" target="_blank">LinkedIn</a>
-                <a href="https://www.github.com/Caadden" target="_blank">GitHub</a>
-            </div>
-        </footer>
-    `,
+  // home is generated dynamically based on current theme/background classes
+  home: null,
   about: `
         <h1>About Me</h1>
         <section>
@@ -46,7 +26,7 @@ export const pages = {
   experiences: `
         <h1>Experiences</h1>
         <section>
-            <p>I am looking for experience in software development and software design.</p>
+            <p>I am looking for experience in software development and machine learning.</p>
         </section>
     `,
   contact: `
@@ -93,7 +73,6 @@ export function prefetchPagesIdle(list = PREFETCH_LIST) {
         const mainEl = doc.querySelector('main');
         const footerEl = doc.querySelector('footer');
         let fragmentHtml = '';
-        // Many pages put their <h1> inside <header> — include it if present (but avoid full nav)
         if (headerEl) {
           const h1 = headerEl.querySelector('h1');
           if (h1) fragmentHtml += h1.outerHTML;
@@ -123,10 +102,125 @@ function insertNewFromTemplate(main, page) {
     const frag = tpl.content.cloneNode(true);
     newChild.appendChild(frag);
   } else {
-    newChild.innerHTML = pages[page] || pages.home;
+    newChild.innerHTML = pages[page] || generateHomeHtml();
   }
   main.appendChild(newChild);
+  // Initialize any home-specific dynamic effects
+  if (page === 'home') {
+    const sub = newChild.querySelector('.sub-intro');
+    if (sub) startTypewriter(sub);
+    // Subtle tilt on hero text based on cursor
+    const intro = newChild.querySelector('.intro-text');
+    const heroArea = newChild; // use whole fade-scale as hero region
+    let rafId = null;
+    let lastX = 0, lastY = 0;
+    const MAX_TILT_DEG = 1; // degrees
+    const MAX_SHIFT_PX = 2; // pixels
+    function applyTilt() {
+      rafId = null;
+      const rect = heroArea.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dx = (lastX - cx) / (rect.width / 2);
+      const dy = (lastY - cy) / (rect.height / 2);
+      const rot = Math.max(-1, Math.min(1, dx)) * MAX_TILT_DEG; // horizontal influences rotation
+      const tx = Math.max(-1, Math.min(1, dx)) * MAX_SHIFT_PX;
+      const ty = Math.max(-1, Math.min(1, dy)) * MAX_SHIFT_PX;
+      if (intro) intro.style.transform = `translate(${tx}px, ${ty}px) rotate(${rot}deg)`;
+    }
+    function onMove(e) {
+      lastX = e.clientX;
+      lastY = e.clientY;
+      if (!rafId) rafId = requestAnimationFrame(applyTilt);
+    }
+    function onLeave() {
+      if (intro) intro.style.transform = '';
+    }
+    heroArea.addEventListener('mousemove', onMove);
+    heroArea.addEventListener('mouseleave', onLeave);
+  }
   return newChild;
+}
+
+function generateHomeHtml() {
+  // Unified home content across all themes/backgrounds
+  const title = "Hey &mdash; it's Caden";
+  const sub = "I'm a [ ]";
+  return `
+    <h1 class="intro-text">${title}</h1>
+    <p class="sub-intro typewriter">${sub}</p>
+  `;
+}
+
+// Simple typewriter that cycles phrases, then settles on a final sentence
+function startTypewriter(el) {
+  // Prevent re-init if already running
+  if (el.dataset.typing === 'true') return;
+  el.dataset.typing = 'true';
+
+  const phrases = [
+    "writing code…",
+    "crying over code…"
+  ];
+  const finalPhrase = "Designing what comes next";
+
+  let phase = 0; // index in phrases, then final
+  let i = 0;
+  let deleting = false;
+  let current = phrases[phase];
+
+  const TYPE_SPEED = 42; // ms per char
+  const DELETE_SPEED = 28; // ms per char
+  const HOLD_MS = 700; // pause at end of each phrase
+
+  function tick() {
+    if (!deleting) {
+      // typing forward
+      i++;
+      el.innerHTML = current.slice(0, i);
+      if (i < current.length) {
+        setTimeout(tick, TYPE_SPEED);
+      } else {
+        // pause then start deleting
+        setTimeout(() => { deleting = true; tick(); }, HOLD_MS);
+      }
+    } else {
+      // deleting backward
+      i--;
+      el.innerHTML = current.slice(0, Math.max(0, i));
+      if (i > 0) {
+        setTimeout(tick, DELETE_SPEED);
+      } else {
+        // move to next phrase or final
+        deleting = false;
+        phase++;
+        if (phase < phrases.length) {
+          current = phrases[phase];
+          setTimeout(tick, TYPE_SPEED);
+        } else {
+          // type the final phrase and stop
+          current = finalPhrase;
+          function typeFinal() {
+            i++;
+            el.innerHTML = current.slice(0, i);
+            if (i < current.length) setTimeout(typeFinal, TYPE_SPEED);
+            else {
+              el.dataset.typing = 'false';
+              // remove caret box once final phrase is complete
+              el.classList.remove('typewriter');
+              // trigger underline reveal: dot appears then line grows from center
+              el.classList.add('underline-in');
+            }
+          }
+          setTimeout(typeFinal, TYPE_SPEED);
+        }
+      }
+    }
+  }
+  // start typing from empty
+  i = 0;
+  el.innerHTML = '';
+  setTimeout(tick, TYPE_SPEED);
 }
 
 export function loadPage(page) {
@@ -135,11 +229,16 @@ export function loadPage(page) {
   if (page === currentPage) return;
   const main = document.getElementById('spa-content');
   if (!main) return;
-
   isTransitioning = true;
   const oldChild = main.querySelector('.fade-scale');
 
   const newChild = insertNewFromTemplate(main, page);
+  // Mark current page on body for CSS hooks and remove any footer on home
+  document.body.dataset.page = page;
+  if (page === 'home') {
+    const strayFooter = newChild.querySelector('footer');
+    if (strayFooter) strayFooter.remove();
+  }
 
   const onNewTransitionEnd = (ev) => {
     if (ev.target !== newChild || ev.propertyName !== 'opacity') return;
@@ -147,6 +246,11 @@ export function loadPage(page) {
     if (oldChild && oldChild.parentNode === main) main.removeChild(oldChild);
     currentPage = page;
     isTransitioning = false;
+    // clear fallback timer if it exists
+    if (newChild._transitionFallback) {
+      clearTimeout(newChild._transitionFallback);
+      newChild._transitionFallback = null;
+    }
   };
 
   if (oldChild) {
@@ -163,6 +267,18 @@ export function loadPage(page) {
       newChild.classList.add('in');
     });
   }
+
+  // Fallback: if transitionend doesn't fire (browsers, visibility, or CSS issues), ensure we don't stay locked
+  newChild._transitionFallback = setTimeout(() => {
+    if (isTransitioning) {
+      console.warn('spa.loadPage: transition fallback fired for', page);
+      // Try to clean up and mark current page
+      if (oldChild && oldChild.parentNode === main) main.removeChild(oldChild);
+      currentPage = page;
+      isTransitioning = false;
+    }
+    newChild._transitionFallback = null;
+  }, 2600);
 }
 
 export function updateSwipeArrowVisibility(page) {

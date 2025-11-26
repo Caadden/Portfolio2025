@@ -10,17 +10,69 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Wavy text for home page */
-.wavy-text {
-  font-size: 2.5rem;
-  font-weight: bold;
-  letter-spacing: 0.12em;
-  color: #fff;
-  margin: 2.5rem 0 1.5rem 0;
-  text-shadow: 0 2px 12px rgba(34,34,34,0.18);
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  min-height: 3.5em;
+/* Typewriter caret effect for sub-intro */
+.typewriter {
+  position: relative;
+  white-space: nowrap;
+}
+.typewriter::after {
+  content: "";
+  display: inline-block;
+  width: 1ch;
+  height: 1em;
+  vertical-align: text-bottom;
+  background: currentColor;
+  margin-left: 0.12rem;
+  animation: caretBlink 1s step-end infinite;
+}
+@keyframes caretBlink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.sub-intro {
+  position: relative;
+  display: inline-block; /* important */
+}
+
+.sub-intro::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -0.35rem;
+  height: 2px;
+  background: currentColor;
+  width: 98.5%;
+  transform: translateX(-50%) scaleX(0);
+  transform-origin: center;
+  opacity: 0;
+  transition:
+    transform 1.6s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.4s ease;
+}
+
+.sub-intro.underline-in::after {
+  opacity: 1;
+  transform: translateX(-50%) scaleX(1);
+}
+
+@keyframes dotStretch {
+  0% {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    transform: translateX(-50%);
+  }
+  60% {
+    width: 22px;
+    height: 3px;
+    border-radius: 3px;
+    transform: translateX(-50%);
+  }
+  100% {
+    width: 28px;
+    height: 2px;
+    border-radius: 0;
+    transform: translateX(-50%);
+  }
 }
